@@ -1,8 +1,12 @@
 package co.empathy.academy.search;
 
+import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
