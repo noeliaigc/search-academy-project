@@ -1,10 +1,11 @@
-package co.empathy.academy.search.engine;
+package co.empathy.academy.search.repositories;
 
 import co.empathy.academy.search.configuration.ElasticSearchConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-
+@Component
 public class SearchEngineImpl implements SearchEngine{
 
     private final ElasticSearchConfig elasticSearchConfig;

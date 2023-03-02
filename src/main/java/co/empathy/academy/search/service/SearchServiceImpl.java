@@ -1,11 +1,12 @@
 package co.empathy.academy.search.service;
 
-import co.empathy.academy.search.engine.SearchEngine;
+import co.empathy.academy.search.repositories.SearchEngine;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-
+@Component
 public class SearchServiceImpl implements SearchService{
     private final SearchEngine searchEngine;
 

@@ -16,17 +16,7 @@ class SearchApplicationTests {
 	}
 
 
-	@Test
-	void test1() throws Exception{
-		//SearchApplication s = new SearchApplication();
-		/**SearchController h = new SearchController();
-		String query = "example";
-		JSONObject result = h.request(query);
-		JSONObject expected = new JSONObject();
-		expected.put("query", query);
-		expected.put("cluster-name", result.get("cluster-name"));
-		assertEquals(result, expected);**/
-	}
+
 
 
 

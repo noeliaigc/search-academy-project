@@ -1,6 +1,4 @@
-package co.empathy.academy.search.engine;
-
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
+package co.empathy.academy.search.repositories;
 
 import java.io.IOException;
 

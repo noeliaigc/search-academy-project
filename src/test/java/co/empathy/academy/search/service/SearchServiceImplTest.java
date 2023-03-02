@@ -1,7 +1,6 @@
 package co.empathy.academy.search.service;
 
-import co.empathy.academy.search.engine.SearchEngine;
-import co.empathy.academy.search.engine.SearchEngineImpl;
+import co.empathy.academy.search.repositories.SearchEngine;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
