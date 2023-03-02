@@ -1,5 +1,6 @@
 package co.empathy.academy.search;
 
+import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -7,6 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -22,9 +27,11 @@ class HelloWorldControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("Hello mariano"));
     }
 
-   /** @Test
-    void testRequest() throws Exception{
+   @Test
+    void givenQuery_WhenRequest_ReturnClusterName() throws IOException {
         HelloWorldController h = new HelloWorldController();
-        System.out.println("request" + h.request().toString());
-    }**/
+        String query = "example";
+       JSONObject result = h.request(query);
+       assertEquals(result.size(), 2);
+   }
 }

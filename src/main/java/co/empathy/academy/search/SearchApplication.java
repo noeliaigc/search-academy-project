@@ -20,17 +20,6 @@ public class SearchApplication {
 	}
 
 
-	@GetMapping("/search")
-	public JSONObject request(@RequestParam String query) throws IOException {
-		ClusterName cn = new ClusterName();
-		JsonValue jo = cn.getClusterName().get("cluster_name");
-		String s = jo.toString();
-		JSONObject aux = new JSONObject();
-		aux.put("query", query);
-		aux.put("cluster-name", s);
-
-		return aux;
-	}
 
 
 
