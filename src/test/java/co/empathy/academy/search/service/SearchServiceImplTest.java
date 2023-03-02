@@ -1,8 +1,7 @@
 package co.empathy.academy.search.service;
 
-import co.empathy.academy.search.controller.SearchController;
-import co.empathy.academy.search.service.engine.SearchEngine;
-import co.empathy.academy.search.service.engine.SearchEngineImpl;
+import co.empathy.academy.search.engine.SearchEngine;
+import co.empathy.academy.search.engine.SearchEngineImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,9 +63,9 @@ public class SearchServiceImplTest {
         SearchService searchService = new SearchServiceImpl(client);
         searchService.getClusterName("example");**/
 
-        SearchEngine s = new SearchEngineImpl();
+       /** SearchEngine s = new SearchEngineImpl(elasticSearchConfig);
         SearchService searchService = new SearchServiceImpl(s);
-        System.out.println(searchService.getClusterName("example"));
+        System.out.println(searchService.getClusterName("example"));**/
 
 
 

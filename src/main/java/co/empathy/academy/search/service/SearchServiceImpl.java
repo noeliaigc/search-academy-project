@@ -1,9 +1,6 @@
 package co.empathy.academy.search.service;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.empathy.academy.search.service.engine.SearchEngine;
-import jakarta.json.JsonObject;
-import jakarta.json.JsonValue;
+import co.empathy.academy.search.engine.SearchEngine;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,12 +22,18 @@ public class SearchServiceImpl implements SearchService{
         return "";
     }
 
+    /**
+     * Creates a JSON object where it will be saved the query performed and the requested cluster name
+     *
+     * @param query
+     * @return JSONObject with the query and cluster name
+     */
     @Override
     public JSONObject getClusterName(String query) {
         JSONObject result = new JSONObject();
         result.put("query", query);
         try {
-            result.put("cluster-name", searchEngine.getElasticSearchClient().cluster().state().valueBody().toJson().asJsonObject().getString("cluster_name"));
+            result.put("cluster-name", searchEngine.getCluster());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
