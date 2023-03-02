@@ -12,6 +12,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ElasticSearchConfig {
 
+    /**
+     * Creates a connection to elasticsearch on port 9200
+     * @return ElasticsearchClient
+     */
     @Bean
     public ElasticsearchClient getElasticClient(){
         // Create the low-level client

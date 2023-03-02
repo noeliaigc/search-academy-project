@@ -28,6 +28,7 @@ public class SearchServiceImplTest {
     void givenQuery_WhenExecutedGetClusterNameMethod_AlsoExecutedGetClusterMethod() throws IOException {
         SearchEngine client = mock(SearchEngine.class);
         SearchService searchService = new SearchServiceImpl(client);
+        JSONObject result = searchService.getClusterName("example");
         verify(client).getCluster();
     }
 }
