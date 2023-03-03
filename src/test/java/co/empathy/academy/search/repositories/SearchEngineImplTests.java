@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 public class SearchEngineImplTests {
 
     @Test
-    void test1() throws IOException {
+    void givenSearchEngine_getClusterMethod_returnClusterName() throws IOException {
         SearchEngineImpl searchEngine = mock(SearchEngineImpl.class);
         String expected = "docker-cluster";
         given(searchEngine.getCluster()).willReturn(expected);
