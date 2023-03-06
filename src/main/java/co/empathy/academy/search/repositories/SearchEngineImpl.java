@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+
 @Component
 public class SearchEngineImpl implements SearchEngine{
 
@@ -29,4 +30,6 @@ public class SearchEngineImpl implements SearchEngine{
     public String getCluster() throws IOException {
         return elasticSearchConfig.getElasticClient().cluster().state().valueBody().toJson().asJsonObject().getString("cluster_name");
     }
+
+
 }
