@@ -21,36 +21,26 @@ public class UserController {
     }
 
 
+
     @PostMapping("/saveUser")
-    public ResponseEntity saveUser(@RequestBody User user) throws IOException {
+    public ResponseEntity saveUser(@RequestBody User user){
 
         try {
            userService.save(user);
         }catch(Exception e){
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.created(null).body("User added");
-    }
-
-    @PostMapping("/createUser")
-    public ResponseEntity createUser(@RequestBody User user) throws IOException {
-        //ConcurrentHashMap users;
-        try {
-            userService.create(user);
-        }catch(Exception e){
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.created(null).body("User added");
+        return ResponseEntity.ok().body("User added");
     }
 
     @GetMapping("/getUser")
-    public ResponseEntity<User> getUserById(@RequestParam String id){
+    public ResponseEntity<User> getUserById(@RequestParam String id) throws Exception {
         User user = userService.getUserById(id);
         return ResponseEntity.created(null).body(user);
     }
 
     @GetMapping("/getUsers")
-    public ResponseEntity<ConcurrentHashMap> getUsers() throws IOException {
+    public ResponseEntity<ConcurrentHashMap> getUsers(){
         return ResponseEntity.created(null).body(userService.getUsers());
     }
 
@@ -62,6 +52,11 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok("User deleted");
+    }
+
+    @PutMapping
+    public ResponseEntity updateUser(@RequestParam String id){
+        return null;
     }
 
 

@@ -8,14 +8,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface UserService {
 
-    void save(User user) throws IOException;
+    void save(User user) throws Exception;
 
-    ConcurrentHashMap getUsers() throws IOException;
+    ConcurrentHashMap getUsers();
 
-    User getUserById(String id);
+    User getUserById(String id) throws Exception;
 
-    void deleteUser(String id);
+    void deleteUser(String id) throws Exception;
 
 
-    void create(User user) throws IOException;
 }
