@@ -2,8 +2,6 @@ package co.empathy.academy.search.service;
 
 import co.empathy.academy.search.models.User;
 
-import java.io.IOException;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public interface UserService {
@@ -17,4 +15,5 @@ public interface UserService {
     void deleteUser(String id) throws Exception;
 
 
+    void updateUser(String id, User user) throws Exception;
 }
