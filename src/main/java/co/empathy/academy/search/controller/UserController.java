@@ -25,7 +25,6 @@ public class UserController {
         this.userService = userService;
     }
 
-
     /**
      * Post request to add a new user.
      *
