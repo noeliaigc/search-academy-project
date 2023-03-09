@@ -7,16 +7,16 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -107,11 +107,15 @@ public class UserController {
      * @return ResponseEntity with a ok or notFound answer
      */
     @Operation(description = "Updates the user by id", responses = {
-            @ApiResponse(responseCode = "200", description = "User has been updated"),
-            @ApiResponse(responseCode = "404", description = "User with such id doesn't exists")
+            @ApiResponse(responseCode = "200", description = "User has been " +
+                    "updated"),
+            @ApiResponse(responseCode = "404", description = "User with such id " +
+                    "doesn't exists")
     })
     @PutMapping("/updateUser/{id}")
-    public ResponseEntity updateUser(@Parameter(description = "Id to update the user", required = true)  String id, @Parameter(description = "User to be updated", required = true) @RequestBody User user) {
+    public ResponseEntity updateUser(@Parameter(description = "Id to update the " +
+            "user", required = true)  String id, @Parameter(description = "User " +
+            "to be updated", required = true) @RequestBody User user) {
         try {
             userService.updateUser(id, user);
         } catch (Exception e) {
@@ -120,5 +124,25 @@ public class UserController {
         return ResponseEntity.ok("User updated");
     }
 
+    /**
+     * Uploads the specified JSON file
+     * @param file
+     * @return ResponseEntity with the users added or with its status
+     */
+    @Operation(description = "Uploads a JSON file", responses = {
+            @ApiResponse(responseCode = "202", description = "File has been " +
+                    "uploaded")
+    })
+    @Async
+    @PostMapping("/uploadFile")
+    public ResponseEntity<ConcurrentHashMap> uploadFile(@Parameter(description = "JSON file to be uploaded", required = true) @RequestParam MultipartFile file) {
+        ConcurrentHashMap<String, User> users = null;
+        try{
+            users = userService.getUsersFromFile(file);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.valueOf(409)).build();
+        }
+        return ResponseEntity.accepted().body(users);
+    }
 
 }

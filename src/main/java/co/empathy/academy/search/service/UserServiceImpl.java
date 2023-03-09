@@ -1,8 +1,13 @@
 package co.empathy.academy.search.service;
 
 import co.empathy.academy.search.models.User;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 import org.springframework.stereotype.Component;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -77,6 +82,28 @@ public class UserServiceImpl implements UserService{
         }else {
             users.replace(id, user);
         }
+    }
+
+    @Override
+    public ConcurrentHashMap<String, User> getUsersFromFile(MultipartFile file) throws Exception {
+        JSONArray fileContent =
+                null;
+        try {
+            fileContent = (JSONArray) new JSONParser().parse(new String(file.getBytes()));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        for(Object obj : fileContent){
+            JSONObject userObj = (JSONObject) obj;
+            String id = userObj.getAsString("id");
+            User user = new User(id, userObj.getAsString("name"),
+                    userObj.getAsString(
+                            "email"));
+            save(user);
+        }
+        return users;
     }
 
 
