@@ -1,13 +1,14 @@
 package co.empathy.academy.search.service;
 
 import co.empathy.academy.search.models.User;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
-import net.minidev.json.parser.ParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -85,25 +86,24 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ConcurrentHashMap<String, User> getUsersFromFile(MultipartFile file) throws Exception {
-        JSONArray fileContent =
-                null;
-        try {
-            fileContent = (JSONArray) new JSONParser().parse(new String(file.getBytes()));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public ConcurrentHashMap<String, User> getUsersFromFile(MultipartFile file) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<User> usersInFile = objectMapper.readValue(file.getBytes(), new TypeReference<List<User>>() {});
+        for(User u : usersInFile){
+            this.users.put(u.getId(), u);
         }
-        for(Object obj : fileContent){
-            JSONObject userObj = (JSONObject) obj;
-            String id = userObj.getAsString("id");
-            User user = new User(id, userObj.getAsString("name"),
-                    userObj.getAsString(
-                            "email"));
-            save(user);
+        return this.users;
+    }
+
+    @Override
+    @Async
+    public ConcurrentHashMap<String, User> getUsersFromFileAsync(MultipartFile file) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<User> usersInFile = objectMapper.readValue(file.getBytes(), new TypeReference<List<User>>() {});
+        for(User u : usersInFile){
+            this.users.put(u.getId(), u);
         }
-        return users;
+        return this.users;
     }
 
 

@@ -131,11 +131,11 @@ public class UserController {
      */
     @Operation(description = "Uploads a JSON file", responses = {
             @ApiResponse(responseCode = "202", description = "File has been " +
-                    "uploaded")
+                    "uploaded"),
+            @ApiResponse(responseCode = "409", description = "User already exists")
     })
-    @Async
     @PostMapping("/uploadFile")
-    public ResponseEntity<ConcurrentHashMap> uploadFile(@Parameter(description = "JSON file to be uploaded", required = true) @RequestParam MultipartFile file) {
+    public ResponseEntity<ConcurrentHashMap> uploadFile(@Parameter(description = "JSON file to be uploaded", required = true) @RequestParam("file") MultipartFile file) {
         ConcurrentHashMap<String, User> users = null;
         try{
             users = userService.getUsersFromFile(file);
@@ -144,5 +144,28 @@ public class UserController {
         }
         return ResponseEntity.accepted().body(users);
     }
+
+    /**
+     * Uploads the specified JSON file asynchronous
+     * @param file json
+     * @return ResponseEntity with the users added or with its status
+     */
+    @Operation(description = "Uploads a JSON file", responses = {
+            @ApiResponse(responseCode = "202", description = "File has been " +
+                    "uploaded"),
+            @ApiResponse(responseCode = "409", description = "User already exists")
+    })
+    @PostMapping("/uploadFileAsync")
+    public ResponseEntity<ConcurrentHashMap> uploadFileAsync(@Parameter(description = "JSON file to be uploaded", required = true)@RequestParam(
+            "file") MultipartFile file){
+        ConcurrentHashMap<String, User> users = null;
+        try{
+            users = userService.getUsersFromFileAsync(file);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.valueOf(409)).build();
+        }
+        return ResponseEntity.accepted().body(users);
+    }
+
 
 }

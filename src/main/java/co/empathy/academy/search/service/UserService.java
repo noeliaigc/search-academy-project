@@ -22,4 +22,6 @@ public interface UserService {
     void updateUser(String id, User user) throws Exception;
 
     ConcurrentHashMap<String, User> getUsersFromFile(MultipartFile file) throws Exception;
+
+    ConcurrentHashMap<String, User> getUsersFromFileAsync(MultipartFile file) throws IOException;
 }
