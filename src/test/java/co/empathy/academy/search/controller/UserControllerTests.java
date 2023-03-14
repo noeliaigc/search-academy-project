@@ -11,6 +11,7 @@ import static org.mockito.Mockito.mock;
 
 import static org.mockito.BDDMockito.given;
 
+
 public class UserControllerTests {
 
     @Test
@@ -82,5 +83,4 @@ public class UserControllerTests {
 
        given(userController.getUsers()).willReturn(ResponseEntity.status(HttpStatus.OK).body(users));
     }
-
 }
