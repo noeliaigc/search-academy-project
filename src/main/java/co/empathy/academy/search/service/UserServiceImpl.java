@@ -8,20 +8,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class UserServiceImpl implements UserService{
 
-    private ConcurrentHashMap<String, User> users = new ConcurrentHashMap<String, User>();
+    private final ConcurrentHashMap<String, User> users =
+            new ConcurrentHashMap<>();
 
 
     /**
      * Saves an user into the ConcurrentHashMap
      *
-     * @param user
-     * @throws Exception
+     * @param user User
+     * @throws Exception if user already exists
      */
     @Override
     public void save(User user) throws Exception {
@@ -34,32 +34,32 @@ public class UserServiceImpl implements UserService{
 
     /**
      * Returns the ConcurrentHashMap containing users
-     * @return
+     * @return users
      */
     @Override
-    public ConcurrentHashMap getUsers() {
+    public ConcurrentHashMap<String, User> getUsers() {
         return users;
     }
 
     /**
      * Finds the user specified by an id, if it is not contained and exception is thrown.
      *
-     * @param id
+     * @param id User id
      * @return User
-     * @throws Exception
+     * @throws Exception if user is not found
      */
     @Override
     public User getUserById(String id) throws Exception {
         if(!users.containsKey(id)){
             throw new Exception("User not found");
         }
-        return (User) users.get(id);
+        return users.get(id);
     }
 
     /**
      * Deletes an user specified by its id
-     * @param id
-     * @throws Exception
+     * @param id User id
+     * @throws Exception if user is not found
      */
     @Override
     public void deleteUser(String id) throws Exception {
@@ -72,9 +72,9 @@ public class UserServiceImpl implements UserService{
 
     /**
      * Updates an user of the ConcurrentHashMap given its id
-     * @param id
-     * @param user
-     * @throws Exception
+     * @param id User id
+     * @param user User
+     * @throws Exception if user is not found
      */
     @Override
     public void updateUser(String id, User user) throws Exception {
@@ -85,26 +85,41 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    /**
+     * From a MultipartFile passed as a parameter it will be saved the
+     * content that are Users into the ConcurrentHashMap of users.
+     *
+     * @param file Multipartfile
+     * @return users
+     * @throws IOException if file is not valid
+     */
     @Override
     public ConcurrentHashMap<String, User> getUsersFromFile(MultipartFile file) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<User> usersInFile = objectMapper.readValue(file.getBytes(), new TypeReference<List<User>>() {});
+        List<User> usersInFile = objectMapper.readValue(file.getBytes(), new TypeReference<>() {});
         for(User u : usersInFile){
             this.users.put(u.getId(), u);
         }
         return this.users;
     }
 
+    /**
+     * From a MultipartFile passed as a parameter it will be saved the
+     * content that are Users into the ConcurrentHashMap of users, but this
+     * time asynchronous.
+     *
+     * @param file Multipartfile
+     * @return users
+     * @throws IOException if file is not valid
+     */
     @Override
     @Async
     public ConcurrentHashMap<String, User> getUsersFromFileAsync(MultipartFile file) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<User> usersInFile = objectMapper.readValue(file.getBytes(), new TypeReference<List<User>>() {});
+        List<User> usersInFile = objectMapper.readValue(file.getBytes(), new TypeReference<>() {});
         for(User u : usersInFile){
             this.users.put(u.getId(), u);
         }
         return this.users;
     }
-
-
 }

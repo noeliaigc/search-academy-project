@@ -43,10 +43,6 @@ public class UserControllerTests {
         userController.saveUser(user);
         userController.saveUser(user2);
 
-        ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
-        users.put(user.getId(), user);
-        users.put(user2.getId(), user2);
-
         given(userController.getUserById(user2.getId())).willReturn(ResponseEntity.status(HttpStatus.OK).body(user2));
     }
 
@@ -62,6 +58,7 @@ public class UserControllerTests {
         given(userController.getUsers()).willReturn(ResponseEntity.status(HttpStatus.OK).body(users));
 
         User userUpdated = new User("1", "user1", "no-email@email.com");
+
         ResponseEntity r = userController.updateUser(userUpdated.getId(),
                 userUpdated);
 
@@ -70,6 +67,20 @@ public class UserControllerTests {
         given(userController.getUsers()).willReturn(ResponseEntity.status(HttpStatus.OK).body(users));
     }
 
+    @Test
+    void givenUsers_whenDeleting_userDeleted(){
+        UserController userController = mock(UserController.class);
+        User user = new User("1", "user1", "user1@email.com");
+        User user2 = new User("2", "user2", "user2@email.com");
+        userController.saveUser(user);
+        userController.saveUser(user2);
 
+        ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
+        users.put(user.getId(), user);
+
+       ResponseEntity r = userController.deleteUser("2");
+
+       given(userController.getUsers()).willReturn(ResponseEntity.status(HttpStatus.OK).body(users));
+    }
 
 }

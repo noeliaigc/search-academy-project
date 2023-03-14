@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +27,7 @@ public class UserController {
     /**
      * Post request to add a new user.
      *
-     * @param user
+     * @param user User
      * @return ResponseEntity with a bad or ok answer
      */
     @Operation(description = "Adds the given user", responses = {
@@ -48,7 +47,7 @@ public class UserController {
     /**
      * Get request to find the desired user by its id
      *
-     * @param id
+     * @param id User id
      * @return ResponseEntity with the user or with a not found answer
      */
     @Operation(description = "Get the user by id", responses = {
@@ -75,14 +74,14 @@ public class UserController {
             @ApiResponse(content = @Content(schema = @Schema(implementation = User.class)), responseCode = "200")
     })
     @GetMapping("/getUsers")
-    public ResponseEntity<ConcurrentHashMap> getUsers() {
+    public ResponseEntity<ConcurrentHashMap<String, User>> getUsers() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUsers());
     }
 
     /**
      * Delete request which will remove the user specified by its id
      *
-     * @param id
+     * @param id String user
      * @return ResponseEntity with a ok or notFound answer
      */
     @Operation(description = "Delete the user by id", responses = {
@@ -102,8 +101,8 @@ public class UserController {
     /**
      * Put request which will update the user specified by its id
      *
-     * @param id
-     * @param user
+     * @param id User id
+     * @param user User
      * @return ResponseEntity with a ok or notFound answer
      */
     @Operation(description = "Updates the user by id", responses = {
@@ -126,7 +125,7 @@ public class UserController {
 
     /**
      * Uploads the specified JSON file
-     * @param file
+     * @param file MultipartFile
      * @return ResponseEntity with the users added or with its status
      */
     @Operation(description = "Uploads a JSON file", responses = {
@@ -135,8 +134,8 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
     @PostMapping("/uploadFile")
-    public ResponseEntity<ConcurrentHashMap> uploadFile(@Parameter(description = "JSON file to be uploaded", required = true) @RequestParam("file") MultipartFile file) {
-        ConcurrentHashMap<String, User> users = null;
+    public ResponseEntity<ConcurrentHashMap<String, User>> uploadFile(@Parameter(description = "JSON file to be uploaded", required = true) @RequestParam("file") MultipartFile file) {
+        ConcurrentHashMap<String, User> users;
         try{
             users = userService.getUsersFromFile(file);
         }catch(Exception e){
@@ -147,7 +146,7 @@ public class UserController {
 
     /**
      * Uploads the specified JSON file asynchronous
-     * @param file json
+     * @param file MultipartFile
      * @return ResponseEntity with the users added or with its status
      */
     @Operation(description = "Uploads a JSON file", responses = {
@@ -156,9 +155,9 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
     @PostMapping("/uploadFileAsync")
-    public ResponseEntity<ConcurrentHashMap> uploadFileAsync(@Parameter(description = "JSON file to be uploaded", required = true)@RequestParam(
+    public ResponseEntity<ConcurrentHashMap<String, User>> uploadFileAsync(@Parameter(description = "JSON file to be uploaded", required = true)@RequestParam(
             "file") MultipartFile file){
-        ConcurrentHashMap<String, User> users = null;
+        ConcurrentHashMap<String, User> users;
         try{
             users = userService.getUsersFromFileAsync(file);
         }catch(Exception e){
