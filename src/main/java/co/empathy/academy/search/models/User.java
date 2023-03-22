@@ -3,15 +3,16 @@ package co.empathy.academy.search.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 
-@Document(indexName = "user")
+@Document(indexName = "users")
 public class User {
     @Id
     private String id;
-    @Field
+    @Field(type = FieldType.Text, name = "name")
     private String name;
-    @Field
+    @Field(type = FieldType.Text, name = "email")
     private String email;
 
 
