@@ -32,6 +32,8 @@ public class Parser {
     }
 
     public void getLines() throws IOException {
+
+
         basicFileLines = basics.lines().collect(Collectors.toList());
         basicFileLines.remove(0);
         akasFileLines = akas.lines().collect(Collectors.toList());
