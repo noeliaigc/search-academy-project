@@ -32,14 +32,27 @@ public class Parser {
     }
 
     public void getLines() throws IOException {
+        String line = "";
+        while((line = basics.readLine()) != null){
+            basicFileLines.add(line);
+        }
+        basicFileLines.remove(0);
 
+        while((line = akas.readLine()) != null){
+            akasFileLines.add(line);
+        }
+        akasFileLines.remove(0);
 
-        basicFileLines = basics.lines().collect(Collectors.toList());
+        while((line = ratings.readLine()) != null){
+            ratingsFileLines.add(line);
+        }
+        ratingsFileLines.remove(0);
+        /*basicFileLines = basics.lines().collect(Collectors.toList());
         basicFileLines.remove(0);
         akasFileLines = akas.lines().collect(Collectors.toList());
         akasFileLines.remove(0);
         ratingsFileLines = ratings.lines().collect(Collectors.toList());
-        ratingsFileLines.remove(0);
+        ratingsFileLines.remove(0);*/
 
         //copyRatings = new ArrayList<>(ratingsFileLines);
         //copyAkas = new ArrayList<>(akasFileLines);
