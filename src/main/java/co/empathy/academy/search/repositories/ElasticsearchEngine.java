@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
 import co.empathy.academy.search.models.Book;
 
 import java.io.InputStream;
+import java.util.List;
 
 public interface ElasticsearchEngine {
     void createIndex(InputStream input);
@@ -11,4 +12,8 @@ public interface ElasticsearchEngine {
     GetIndexResponse getIndexes();
 
     void indexDocument(Book book);
+
+    void indexDocumentById(String id, Book book);
+
+    List<Book> getDocuments();
 }

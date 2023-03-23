@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
+import java.util.List;
 
 @Component
 public class ElasticsearchServiceImpl implements ElasticsearchService {
@@ -31,5 +32,15 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
     @Override
     public void indexDocument(Book book) {
         elasticsearchEngine.indexDocument(book);
+    }
+
+    @Override
+    public void indexDocumentById(String id, Book book) {
+        elasticsearchEngine.indexDocumentById(id, book);
+    }
+
+    @Override
+    public List<Book> getDocuments() {
+        return elasticsearchEngine.getDocuments();
     }
 }
