@@ -5,6 +5,7 @@ import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexRequest;
+import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
 import co.elastic.clients.elasticsearch.indices.IndexState;
 import co.empathy.academy.search.configuration.ElasticSearchConfig;
@@ -32,6 +33,7 @@ public class ElasticsearchEngineImpl implements ElasticsearchEngine {
     @Override
     public void createIndex(InputStream input) {
         try {
+
             elasticSearchConfig.getElasticClient().indices().create(b -> b.index(
                     INDEX).withJson(input));
         }catch(IOException e){
@@ -96,6 +98,23 @@ public class ElasticsearchEngineImpl implements ElasticsearchEngine {
             System.out.println("error");
         }
         return books;
+    }
+
+    @Override
+    public void deleteIndex(String index) {
+        try{
+
+            DeleteIndexResponse deleteIndexResponse =
+                    elasticSearchConfig.getElasticClient().indices().delete(c -> c.index(INDEX));
+
+            if(deleteIndexResponse.acknowledged()){
+                System.out.println(("deleted"));
+            }else{
+                System.out.println("not deleted");
+            }
+        }catch(IOException e){
+            System.out.println("cannot be deleted");
+        }
     }
 
 }

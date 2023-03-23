@@ -17,4 +17,6 @@ public interface ElasticsearchService {
 
 
     List<Book> getDocuments();
+
+    void deleteIndex(String index);
 }

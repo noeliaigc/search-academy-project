@@ -53,4 +53,9 @@ public class IndexController {
     public ResponseEntity<List<Book>> getDocuments(){
         return ResponseEntity.ok(elasticsearchService.getDocuments());
     }
+
+    @DeleteMapping("/books/delete")
+    public void deleteIndex(@RequestParam String index){
+        elasticsearchService.deleteIndex(index);
+    }
 }

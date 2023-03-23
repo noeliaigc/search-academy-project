@@ -43,4 +43,9 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
     public List<Book> getDocuments() {
         return elasticsearchEngine.getDocuments();
     }
+
+    @Override
+    public void deleteIndex(String index) {
+        elasticsearchEngine.deleteIndex(index);
+    }
 }

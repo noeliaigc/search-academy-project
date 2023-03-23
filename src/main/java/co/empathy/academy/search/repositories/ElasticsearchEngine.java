@@ -16,4 +16,6 @@ public interface ElasticsearchEngine {
     void indexDocumentById(String id, Book book);
 
     List<Book> getDocuments();
+
+    void deleteIndex(String index);
 }
