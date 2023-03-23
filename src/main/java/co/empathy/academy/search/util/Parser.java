@@ -33,20 +33,27 @@ public class Parser {
 
     public void getLines() throws IOException {
         String line = "";
-        while((line = basics.readLine()) != null){
+        int counter = 0;
+        while((line = basics.readLine()) != null && counter !=100) {
             basicFileLines.add(line);
+            counter++;
         }
+        counter = 0;
         basicFileLines.remove(0);
 
-        while((line = akas.readLine()) != null){
+        while((line = akas.readLine()) != null && counter !=350){
             akasFileLines.add(line);
+            counter++;
         }
         akasFileLines.remove(0);
-
-        while((line = ratings.readLine()) != null){
+        counter = 0;
+        while((line = ratings.readLine()) != null && counter !=100){
             ratingsFileLines.add(line);
+            counter++;
         }
         ratingsFileLines.remove(0);
+        counter=0;
+
         /*basicFileLines = basics.lines().collect(Collectors.toList());
         basicFileLines.remove(0);
         akasFileLines = akas.lines().collect(Collectors.toList());
@@ -54,8 +61,6 @@ public class Parser {
         ratingsFileLines = ratings.lines().collect(Collectors.toList());
         ratingsFileLines.remove(0);*/
 
-        //copyRatings = new ArrayList<>(ratingsFileLines);
-        //copyAkas = new ArrayList<>(akasFileLines);
     }
 
     public BufferedReader getBufferedReader(MultipartFile file){
@@ -82,7 +87,7 @@ public class Parser {
 
     private List<Movie> doBasics(List<String> basicFileLines) {
         List<Movie> movies = new ArrayList<>();
-        for(int i = 0; i < basicFileLines.size() - 1; i++){
+        for(int i = 0; i < basicFileLines.size(); i = 0){
             String line = basicFileLines.get(i);
             basicFileLines.remove(i);
             Movie movie = parseBasicsLine(line);
@@ -114,7 +119,7 @@ public class Parser {
 
     private List<Akas> doAkas(String titleId) {
         List<Akas> akas = new ArrayList<>();
-        for(int i = 0; i < akasFileLines.size() - 1; i=0){
+        for(int i = 0; i < akasFileLines.size(); i=0){
             String line = akasFileLines.get(i);
             String id = line.split("\t")[0];
             if(id.equals(titleId)){
@@ -130,7 +135,7 @@ public class Parser {
     }
 
     private String[] doRatings(String titleId) {
-        for(int i = 0; i < ratingsFileLines.size() - 1; i++){
+        for(int i = 0; i < ratingsFileLines.size(); i++){
             String line = ratingsFileLines.get(i);
             String id = line.split("\t")[0];
             if(id.equals(titleId)){
