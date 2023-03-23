@@ -4,13 +4,11 @@ import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import co.elastic.clients.elasticsearch.indices.DeleteIndexRequest;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
 import co.elastic.clients.elasticsearch.indices.IndexState;
 import co.empathy.academy.search.configuration.ElasticSearchConfig;
 import co.empathy.academy.search.models.Book;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,11 +43,12 @@ public class ElasticsearchEngineImpl implements ElasticsearchEngine {
     public GetIndexResponse getIndexes() {
         try {
             GetIndexResponse request =
-                    elasticSearchConfig.getElasticClient().indices().get(c -> c.index(INDEX));
+                    elasticSearchConfig.getElasticClient().indices().get(c ->
+                            c.index(INDEX));
             IndexState is = request.get("books");
             return request;
         }catch(IOException e){
-
+            System.out.println("There is no index");
         }
         return null;
     }
@@ -70,7 +69,8 @@ public class ElasticsearchEngineImpl implements ElasticsearchEngine {
     public void indexDocumentById(String id, Book book) {
         try{
             IndexResponse ir =
-                    elasticSearchConfig.getElasticClient().index(i -> i.index(INDEX).id(id).document(book));
+                    elasticSearchConfig.getElasticClient().index(i -> i.index(
+                            INDEX).id(id).document(book));
             System.out.println("indexed " + ir.version());
         }catch (IOException e){
             System.out.println("Cannot be indexed");
@@ -105,7 +105,8 @@ public class ElasticsearchEngineImpl implements ElasticsearchEngine {
         try{
 
             DeleteIndexResponse deleteIndexResponse =
-                    elasticSearchConfig.getElasticClient().indices().delete(c -> c.index(INDEX));
+                    elasticSearchConfig.getElasticClient().indices().delete(c ->
+                            c.index(INDEX));
 
             if(deleteIndexResponse.acknowledged()){
                 System.out.println(("deleted"));
