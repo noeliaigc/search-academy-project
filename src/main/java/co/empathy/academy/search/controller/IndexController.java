@@ -58,4 +58,6 @@ public class IndexController {
     public void deleteIndex(@RequestParam String index){
         elasticsearchService.deleteIndex(index);
     }
+
+
 }
