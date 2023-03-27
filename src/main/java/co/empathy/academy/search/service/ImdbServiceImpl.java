@@ -16,20 +16,25 @@ public class ImdbServiceImpl implements ImdbService{
 
     @Async
     @Override
-    public void uploadFiles(MultipartFile basics, MultipartFile akas, MultipartFile ratings) throws IOException {
+    public void uploadFiles(MultipartFile basics, MultipartFile akas,
+                            MultipartFile ratings, MultipartFile crew,
+                            MultipartFile participants) throws IOException {
         try{
-            if(basics.isEmpty() || akas.isEmpty() || ratings.isEmpty() ){
+            if(basics.isEmpty() || akas.isEmpty() || ratings.isEmpty() ||
+                    crew.isEmpty() || participants.isEmpty() ){
                 throw new IOException("File is empty");
             }
 
             List<Movie> movies = new ArrayList<>();
-            reader = new ImbdReader(basics, akas, ratings);
-
+            reader = new ImbdReader(basics, akas, ratings, crew, participants);
+            int size = 0;
 
             while(movies.size() <= 800) {
                 reader.getLines();
                 Movie movie = reader.getMovie();
-                movies.add(movie);
+                if(movie != null) {
+                    movies.add(movie);
+                }
             }
 
 

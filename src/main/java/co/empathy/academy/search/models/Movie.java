@@ -14,10 +14,13 @@ public class Movie {
     double avgRating;
     int numVotes;
     List<Akas> akas;
+    List<Director> directors;
+    List<Actor> actors;
 
     public Movie(String titleId, String primaryTitle, String originalTitle,
                  int isAdult, int startYear, int endYear, String[] genres,
-                 double avgRating, int numVotes, List<Akas> akas) {
+                 double avgRating, int numVotes, List<Akas> akas,
+                 List<Director> directors) {
         this.titleId = titleId;
         this.primaryTitle = primaryTitle;
         this.originalTitle = originalTitle;
@@ -28,5 +31,6 @@ public class Movie {
         this.avgRating = avgRating;
         this.numVotes = numVotes;
         this.akas = akas;
+        this.directors = directors;
     }
 }
