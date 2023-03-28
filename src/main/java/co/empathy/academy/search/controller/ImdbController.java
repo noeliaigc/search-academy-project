@@ -1,20 +1,19 @@
 package co.empathy.academy.search.controller;
 
+import co.empathy.academy.search.models.Movie;
 import co.empathy.academy.search.service.ImdbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 @RestController
-@RequestMapping("/index")
+@RequestMapping("/movies")
 public class ImdbController {
-
     private final ImdbService imdbService;
 
     @Autowired
@@ -34,5 +33,35 @@ public class ImdbController {
             throw new RuntimeException(e);
         }
         return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping("")
+    public void createIndex(@RequestBody MultipartFile file){
+        try {
+            InputStream input = file.getInputStream();
+            imdbService.createIndex(input);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("/movies/_doc")
+    public void indexDocument(@RequestBody Movie movie){
+        imdbService.indexDocument(movie);
+    }
+
+    @GetMapping("/_search")
+    public ResponseEntity<List<Movie>> getDocuments(){
+        return ResponseEntity.ok(imdbService.getDocuments());
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteIndex(){
+        imdbService.deleteIndex();
+    }
+
+    @GetMapping("/_cat/indices")
+    public String getIndices(){
+        return imdbService.getIndixes().toString();
     }
 }

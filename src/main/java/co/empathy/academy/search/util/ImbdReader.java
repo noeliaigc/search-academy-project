@@ -1,8 +1,6 @@
 package co.empathy.academy.search.util;
 
-import co.empathy.academy.search.models.Akas;
-import co.empathy.academy.search.models.Director;
-import co.empathy.academy.search.models.Movie;
+import co.empathy.academy.search.models.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -24,6 +22,8 @@ public class ImbdReader {
     private String ratingsLine;
     private String crewLine;
     private String participantLine;
+
+    public boolean lines = true;
 
 
 
@@ -60,10 +60,15 @@ public class ImbdReader {
         akasLine = akas.readLine();
         ratingsLine = ratings.readLine();
         crewLine = crew.readLine();
+        participantLine = participants.readLine();
     }
 
 
     public Movie getMovie() throws IOException {
+        if(noLines()){
+            lines = false;
+            return null;
+        }
         String[] parts = basicsLine.split("\t");
         String titleId = check(parts[0]);
         String primaryTitle = check(parts[2]);
@@ -74,6 +79,7 @@ public class ImbdReader {
         }
         int startYear = Integer.parseInt(check(parts[5]));
         int endYear = Integer.parseInt(check(parts[6]));
+        int runtimeMinutes = Integer.parseInt(check(parts[7]));
         String genres[]= parts[8].split(",");
 
         //ratings file
@@ -88,8 +94,31 @@ public class ImbdReader {
         //get directors
         List<Director> directors = doDirectors(titleId);
 
-        return new Movie(titleId, primaryTitle, originalTitle, isAdult,
-                startYear, endYear, genres, avgRating, numVotes, akas, directors);
+        //getActors
+        List<Actor> actors = doActors(titleId);
+
+        return new Movie(titleId, primaryTitle, originalTitle,
+                startYear, endYear, runtimeMinutes, genres, avgRating,
+                numVotes, akas,
+                directors, actors);
+    }
+
+    private boolean noLines() {
+        return basicsLine == null;
+    }
+
+    private List<Actor> doActors(String titleId) throws IOException {
+        List<Actor> actors = new ArrayList<>();
+        String title;
+        while((title = participantLine.split("\t")[0]).equals(titleId)){
+            String[] parts = participantLine.split("\t");
+            Actor actor = new Actor(new Name(parts[2]), parts[5]);
+            actors.add(actor);
+
+            participantLine = participants.readLine();
+        }
+
+        return actors;
     }
 
     private List<Director> doDirectors(String titleId) {
@@ -128,11 +157,15 @@ public class ImbdReader {
     }
 
     private String[] doRatings(String titleId) {
-        String[] parts = ratingsLine.split("\t");
-        if(parts[0].equals(titleId)){
-            return parts;
+        if (ratingsLine == null) {
+            return new String[]{"id", "0.0", "0"};
+        }else{
+            String[] parts = ratingsLine.split("\t");
+            if (parts[0].equals(titleId)) {
+                return parts;
+            }
         }
-        return new String[] {"id", "0.0", "0"};
+        return new String[]{"id", "0.0", "0"};
     }
 
     private String check(String part) {

@@ -1,11 +1,22 @@
 package co.empathy.academy.search.models;
 
 public class Actor {
-    private String id;
+    private String character;
     private Name name;
 
-    public Actor(String id, Name name) {
-        this.id = id;
+    public Actor(Name name, String id) {
+        this.character = id;
         this.name = name;
+    }
+
+    public Actor(){
+    }
+
+    public String getCharacter() {
+        return character;
+    }
+
+    public Name getName() {
+        return name;
     }
 }

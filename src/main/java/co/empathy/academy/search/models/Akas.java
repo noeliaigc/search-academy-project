@@ -12,4 +12,23 @@ public class Akas {
         this.language = language;
         this.isOriginal = isOriginal;
     }
+
+    public Akas(){
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public String getIsOriginal() {
+        return isOriginal;
+    }
 }

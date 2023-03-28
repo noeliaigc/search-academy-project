@@ -6,12 +6,24 @@ services:
     container_name: elasticsearch-docker
     environment:
       - "discovery.type=single-node"
+      - http.cors.enabled=true
+      - http.cors.allow-origin=https://app.elasticvue.com
+      - http.cors.allow-origin=http://cerebro:9000
     ports:
       - "9200:9200"
     healthcheck:
       test: [ "CMD", "curl", "-u", "elastic:searchPathRules", "-f", "localhost:9200" ]
       interval: 30s
       retries: 10
+  cerebro:
+    image: dylanmei/cerebro
+    container_name: cerebro
+    hostname: "cerebro"
+    ports:
+      - 9000:9000
+    command:
+      - bin/cerebro
+      - -Dhosts.0.host=http://elasticsearch:9200
 
   searchapi:
     container_name: searchApi

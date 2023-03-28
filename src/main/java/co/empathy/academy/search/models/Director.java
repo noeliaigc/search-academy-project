@@ -6,4 +6,10 @@ public class Director {
     public Director(String id) {
         this.idName = id;
     }
+
+    public Director(){}
+
+    public String getIdName() {
+        return idName;
+    }
 }
